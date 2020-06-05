@@ -1,0 +1,70 @@
+#include<stdio.h>
+#include<string.h>
+#define MAX 50
+
+typedef struct stack
+{
+    char s[MAX];
+    int tos ;
+}stack;
+
+void push (stack *t,int ele)
+{
+    t->s[++t->tos]=ele;
+}
+
+int pop (stack *t)
+{
+    t->tos--;
+    return(t->s[t->tos+1]);
+}
+
+int isoperand (char ch)
+{
+    return (ch>='0' && ch<='9');
+
+}
+
+int operate(int op1,int op2,char opt)
+{
+    switch(opt)
+    {
+        case '+' : return (op1+op2);
+        case '-' : return (op1-op2);
+        case '*' : return (op1*op2);
+        case '/' : return (op1/op2);
+        case '%' : return (op1%op2);
+
+    }
+    return -1;
+}
+
+int evaluate (char post [])
+{
+    int i,l=strlen(post),op1,op2,ans;
+    stack x;
+    x.tos=-1;
+
+    for(i=0 ;i<l ;i++)
+    {
+        if (isoperand(post[i]))
+            push(&x,post[i]-'0');
+            else
+        {
+            op2=pop(&x);
+            op1=pop(&x);
+            ans = operate(op1,op2,post[i]);
+            push(&x,ans);
+        }
+    }
+    ans=pop(&x);
+    return ans;
+}
+
+void main ()
+{
+    char postfix [MAX];
+    printf("Enter string\n");
+    gets(postfix);
+    printf("ans =%d\n",evaluate(postfix));
+}
