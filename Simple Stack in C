@@ -1,0 +1,112 @@
+#include<stdio.h>
+#include<string.h>
+#define MAX 50
+
+typedef struct stack 
+{
+	int a[MAX];
+	int tos ;
+}stack;
+
+void push (stack *t, int ele)
+{
+	if (t->tos == MAX-1)
+	   printf("\nstack is overflown!");
+	else
+	   t->tos++;
+	   t->a[t->tos]=ele;
+		
+}
+
+int isempty (stack* t)
+{
+	if(t->tos == -1)
+		return 1;
+	else
+		return 0;
+}
+
+int stacktop(stack *t)
+{
+  if(isempty(t))
+  {
+  printf("\nStack is empty!");
+  return -1;
+  }
+  return(t->s[t->tos]);
+}
+
+int pop(stack *t)
+{
+  int z;
+  if(isempty(t))
+  {
+  printf("\nStack is empty!");
+  return -1;
+  }
+  z=t->s[t->tos];
+  t->tos--;
+  return z;
+}
+
+void display(stack *t)
+{
+  int i;
+  if(isempty(t))
+  {
+    printf("\nStack is empty!\n");
+    return -1;
+  }
+  printf("\nelements of the stack are : ");
+  for(i=t->tos;i>=0;i--)
+  {
+    printf("%d",t->s[i]);
+  }
+  printf("\n");
+}
+
+void main()
+{
+int ch,ele;
+stack x;
+x.tos = -1;
+while(1)
+{
+  printf("Enter a choice:\n1:Push\n2:Pop\n3:Stacktop\n4:Display\n5:Exit\n");
+  scanf("%d",&ch);
+  if(ch==5)
+    break;
+  switch(ch)
+  {
+    case 1: printf("Enter element to be inserted: ");
+            scanf("%d",&ele);
+            push(&x,ele);
+            break;
+    case 2: if(isempty(&x))
+            {
+              printf("Stack underflown!\n");
+            }
+            else
+            {
+              ele=pop(&x);
+              printf("Element which is popped is %d\n",ele);
+            }
+            break;
+    case 3: if(isempty(&x))
+            {
+              printf("Stack is empty!\n");
+            }
+            else
+            {
+              ele= stacktop(&x);
+              printf("\nElement which is at the top of the stack is %d\n",ele);
+            }
+            break;
+    case 4: display(&x);
+            break;
+    default : printf("\ninvalid choice\n");
+    }
+  }
+}
+
+
