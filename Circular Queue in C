@@ -1,0 +1,98 @@
+#include<stdio.h>
+#define MAX 10
+typedef struct queue
+{
+int q[MAX];
+int f,r,count;
+}queue;
+
+void insert(queue *t,int ele)
+{
+if(t->count==MAX)
+{
+printf("Queue overflow\n");
+return -1;
+}
+t->count++;
+t->r=(t->r+1)%MAX;
+t->q[t->r]=ele;
+}
+
+int isempty(queue *t)
+{
+if(t->count==0)
+return 1;
+else
+ return 0;
+}
+
+int delete1(queue *t)
+{
+int z;
+if(isempty(t))
+{
+printf("Queue underflow\n");
+return -1;
+}
+t->count--;
+z = t->q[t->f];
+t->f = (t->f+1)%MAX;
+return z;
+}
+
+void display(queue *t)
+{
+int i;
+if(isempty(t))
+{
+printf("Queue empty\n");
+return;
+}
+i=t->f;
+while(1)
+{
+printf("%d ",t->q[i]);
+if(i==t->r)
+break;
+i=(i+1)%MAX;
+}
+printf("\n");
+}
+
+void main()
+{
+int ch,ele;
+queue x;
+x.r=MAX-1;
+x.f=0;
+while(1)
+{
+printf("Enter a choice:  1:Insert  2:Delete 3:Display  4:Exit\n");
+scanf("%d",&ch);
+if(ch==4)
+break;
+switch(ch)
+{
+case 1: printf("Enter element to insert: ");
+scanf("%d",&ele);
+insert(&x,ele);
+display(&x);
+break;
+case 2: if(isempty(&x))
+{
+printf("Queue underflow\n");
+}
+else
+{
+ele=delete1(&x);
+printf("Deleted element = %d\n",ele);
+display(&x);
+}
+break;
+case 3: display(&x);
+break;
+default : printf("invalid choice");
+}
+}
+}
+
