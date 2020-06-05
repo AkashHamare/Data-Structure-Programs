@@ -1,0 +1,91 @@
+#include<stdio.h>
+#include<string.h>
+#define MAX 50
+
+typedef struct stack 
+{
+	char a[MAX];
+	int tos ;
+}stack;
+
+void push (stack *t, char ele)
+{
+	if (t->tos == MAX-1)
+	   printf("stack overflown");
+	else
+	   t->tos++;
+	   t->a[t->tos]=ele;
+		
+}
+
+int isempty (stack* t)
+{
+	if(t->tos == -1)
+		return 1;
+	else
+		return 0;
+}
+
+int pop(stack *t)
+{
+ 	char z;
+ if(isempty(t))
+{
+
+ printf("Stack Underflow\n"); 
+ return -1;
+}
+else 
+ z=(t->a[t->tos]);
+ t->tos--;
+ return(z);
+}
+
+int check(char in[])
+{
+ stack x;
+ x.tos=-1;
+ 	int ele,i,l=strlen(in);
+ 
+ 	for(i=0;i<l;i++)
+ {
+  if(in[i]=='(' || in[i]=='{' || in[i]=='[')
+		push(&x,in[i]);
+	else if ( in[i]==']' || in[i]=='}' || in[i]==')')
+		{
+		if (isempty(&x))
+			return 0;
+		else 
+			ele= pop(&x);
+
+		switch (in[i])
+		{
+			case ')':if(ele!='(')
+					return 0;
+					break;
+			case ']':if(ele!='[')
+					return 0;
+					break;
+			case '}':if(ele!='{')
+					return 0;
+					break;
+		}
+		}
+}
+ if (isempty(&x))
+return 1;
+else return 0;
+}
+
+void main ()
+{ 
+ char infix[MAX];
+ printf ("Enter infix expression :");
+ scanf("%s",infix);
+	
+if (check (infix))	
+printf("\nvalid expression\n");
+	
+else 
+printf("\n Invalid Expression");
+}
