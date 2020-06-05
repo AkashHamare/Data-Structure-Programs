@@ -1,0 +1,187 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct node
+{
+    int data;
+    struct node *next;
+}node;
+typedef struct head
+{
+    node *start;
+}head;
+void insertbeg(head *t,int ele)
+{
+    node *p;
+    p=(node *)malloc(sizeof(node));
+    p->data=ele;
+    p->next=t->start;
+    t->start=p;
+}
+void insertend(head *t,int ele)
+{
+    node *p,*q;
+    p=(node *)malloc(sizeof(node));
+    p->data=ele;
+    p->next=NULL;
+    if(t->start==NULL)
+    {
+        t->start=p;
+    }
+    else
+    {
+        q=t->start;
+        while(q->next!=NULL)
+            q=q->next;
+        q->next=p;
+    }
+
+}
+void deleteele(head *t,int ele)
+{
+    node *q;
+    if(t->start==NULL)
+    {
+        printf("Linked List empty\n");
+        return;
+    }
+    if(ele==t->start->data)
+    {
+        t->start=t->start->next;
+        return;
+    }
+    q=t->start;
+    while(q->next!=NULL)
+    {
+        if(ele==q->next->data)
+            break;
+        else q=q->next;
+    }
+    if(q->next==NULL)
+        printf("%d not found\n",ele);
+    else q->next=q->next->next;
+}
+void display(head *t)
+{
+    node *q;
+    if(t->start==NULL)
+    {
+        printf("Linked List empty\n");
+        return;
+    }
+    q=t->start;
+    while(q!=NULL)
+    {
+        printf("%d ",q->data);
+        q=q->next;
+    }
+    printf("\n");
+}
+void reverse(head *t)
+{
+    node *p=t->start,*q=NULL,*r;
+    while(p!=NULL)
+    {
+        r=p->next;
+        p->next=q;
+        q=p;
+        p=r;
+    }
+    t->start=q;
+}
+int count(head *t)
+{
+    node *q;
+    int c=0;
+    q=t->start;
+    while(q!=NULL)
+    {
+        c++;
+        q=q->next;
+    }
+    return c;
+}
+int search(head *t,int ele)
+{
+    node *q;
+    q=t->start;
+    while(q!=NULL)
+    {
+        if(ele==q->data)
+        {
+            return 1;
+        }
+        else
+        {
+            q=q->next;
+        }
+    }
+    return 0;
+}
+void main()
+{
+    int ch,ele,n,i;
+    head x,y,z;
+    x.start=y.start=z.start=NULL;
+    printf("Enter node required initially\n");
+    scanf("%d",&n);
+    for(i=0;i<n;i++)
+    {
+        printf("Enter element\n");
+        scanf("%d",&ele);
+        insertend(&x,ele);
+    }
+    while(1)
+    {
+        printf("Enter choice:\n1:Insertbeg\t2:Insertend\t3:Delete\t4:Display\t5:Reverse\t6:Count\t7:Search\t8:Exit\n");
+        scanf("%d",&ch);
+        if(ch==8)
+            break;
+        switch(ch)
+        {
+            case 1:printf("Enter element to be inserted\n");
+                    scanf("%d",&ele);
+                    insertbeg(&x,ele);
+                    display(&x);
+                    break;
+            case 2:printf("Enter element to be inserted\n");
+                    scanf("%d",&ele);
+                    insertend(&x,ele);
+                    display(&x);
+                    break;
+            case 3:if(x.start==NULL)
+                    {
+                        printf("Linked List empty\n");
+                        return;
+                    }
+                    printf("Enter element to be deleted:\n");
+                    scanf("%d",&ele);
+                    deleteele(&x,ele);
+                    display(&x);
+                    break;
+            case 4:display(&x);
+                    break;
+            case 5:reverse(&x);
+                    display(&x);
+                    break;
+            case 6:ele=count(&x);
+                    printf("Number of element present %d\n",ele);
+                    break;
+            case 7:if(x.start==NULL)
+                    {
+                        printf("Linked List empty\n");
+                        return;
+                    }
+                    printf("Enter element to be searched:\n");
+                    scanf("%d",&ele);
+                    ele=search(&x,ele);
+                    if(ele==1)
+                    {
+                        printf("Element present\n");
+                    }
+                    else printf("Element not present\n");
+                    display(&x);
+                    break;
+        }
+    }
+
+}
