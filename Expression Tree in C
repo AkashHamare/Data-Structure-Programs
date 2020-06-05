@@ -1,0 +1,148 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#define MAX 30
+typedef struct node
+{
+	char data;
+	struct node *left,*right;
+}node;
+
+typedef struct head
+{
+	node *root;
+}head;
+
+typedef struct stack
+{
+	node *s[MAX];
+	int tos;
+}stack;
+void push(stack *t,node *ele)
+{
+	if(t->tos==MAX)
+	{
+		printf("stack overflow\n");
+		return;
+	}
+	t->s[++t->tos]=ele;
+}
+int isempty(stack *t)
+{
+	return(t->tos==-1);
+}
+node * pop(stack *t)
+{
+	if(isempty(t))
+	{
+		printf("stack underflow\n");
+		return NULL;
+	}
+	t->tos--;
+	return(t->s[t->tos+1]);
+}
+int isoperand(char ch)
+{
+	if( ch>='0'&& ch<='9')
+		return 1;
+	else return 0;
+}
+
+void insert(head *t,int ele)
+{
+	node *p,*q;
+	p=(node *)malloc(sizeof(node));
+	p->data=ele;
+	p->left=p->right=NULL;
+	if(t->root==NULL)
+	{
+		t->root=p;
+		return;
+	}
+	q=t->root;
+	while(q!=NULL)
+	{
+		if(ele <= q->data)
+		{
+			if(q->left ==NULL)
+			{
+				q->left=p;
+				return;
+			}
+			else q=q->left;
+		}
+		else
+		{
+			if(q->right==NULL)
+			{
+				q->right=p;
+				return;
+			}
+			else q=q->right;
+		}
+	}
+}
+
+void inorder(node *x)
+{
+	if(x!=NULL)
+	{
+		inorder(x->left);
+		printf("%c ",x->data);
+		inorder(x->right);
+	}
+}
+void preorder(node *x)
+{
+	if(x!=NULL)
+	{
+		printf("%c ",x->data);
+		preorder(x->left);
+		preorder(x->right);
+	}
+}
+
+node * construct(char post[])
+{
+	int i,l;
+	char ch;
+	stack y;
+	y.tos=-1;
+	head x;
+	x.root=NULL;
+	node *p;
+	l=strlen(post);
+	for(i=0;i<l;i++)
+	{
+		p=(node *)malloc(sizeof(node));
+		p->data=post[i];
+		p->left=p->right=NULL;
+		if(isoperand(post[i]))
+		{
+			push(&y,p);
+		}
+		else
+		{
+			p->right=pop(&y);
+			p->left=pop(&y);
+			push(&y,p);
+		}
+	}
+	return(pop(&y));
+}
+void main()
+{
+	int ans;
+	char post[30];
+	node * q;
+	printf("enter a postfix expression\n");
+	gets(post);
+	q=construct(post);
+	printf("expression tree for given equation is:\n");
+	inorder(q);
+	printf("\n");
+	preorder(q);
+}
+
+
+
